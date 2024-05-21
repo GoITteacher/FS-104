@@ -6,27 +6,27 @@ const refs = {
 refs.formEl.addEventListener('submit', e => {
   e.preventDefault();
 
-  const ip = e.target.elements.userip.value;
+  const userIp = e.target.elements.userip.value;
 
-  getInfoByIp(ip).then(data => {
+  getIpInfo(userIp).then(data => {
     renderIp(data);
   });
 });
 
-function getInfoByIp(ip) {
+function getIpInfo(userIp) {
   const BASE_URL = 'https://ip-geolocation-ipwhois-io.p.rapidapi.com';
   const END_POINT = '/json/';
-  const PARAMS = `?ip=${ip}`;
-  const url = BASE_URL + END_POINT + PARAMS;
+  const params = new URLSearchParams({
+    ip: userIp,
+  });
+  const url = `${BASE_URL}${END_POINT}?${params}`;
 
-  const options = {
-    headers: {
-      'X-RapidAPI-Key': 'f6fe44fec7msh9f58de139869781p15408ajsn8e7b73b5d6b1',
-      'X-RapidAPI-Host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
-    },
+  const headers = {
+    'X-RapidAPI-Key': '9b3ff61931msh1b42d77d34e33dap1c29cajsn3d3169e0e2f4',
+    'X-RapidAPI-Host': 'ip-geolocation-ipwhois-io.p.rapidapi.com',
   };
 
-  return fetch(url, options).then(res => res.json());
+  return fetch(url, { headers }).then(res => res.json());
 }
 
 function renderIp({

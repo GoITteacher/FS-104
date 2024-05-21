@@ -3,18 +3,25 @@ const refs = {
   listEl: document.querySelector('.js-pokemon-list'),
 };
 
-refs.formEl.addEventListener('submit', onFormElSubmit);
-function onFormElSubmit(event) {
-  event.preventDefault();
-  const value = refs.formEl.elements.query.value;
-  getPokemon(value).then(renderPokemon);
-}
+refs.formEl.addEventListener('submit', e => {
+  e.preventDefault();
 
-function getPokemon(value) {
-  const url = `https://pokeapi.co/api/v2/pokemon/${value.toLowerCase()}`;
-  return fetch(url).then(res => {
-    return res.json();
-  });
+  const pokemonName = e.target.elements.query.value.trim();
+  if (!pokemonName) {
+    alert('Error');
+    return;
+  }
+
+  getPokemon(pokemonName)
+    .then(renderPokemon)
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+function getPokemon(pokemon) {
+  const url = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
+  return fetch(url).then(res => res.json());
 }
 
 function renderPokemon({
